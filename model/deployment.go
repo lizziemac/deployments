@@ -16,11 +16,11 @@ package model
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"time"
 
-	"github.com/asaskevich/govalidator"
-	"github.com/satori/go.uuid"
+	"github.com/pkg/errors"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // Errors
@@ -216,4 +216,10 @@ type Query struct {
 	// only return deployments between timestamp range
 	CreatedAfter  *time.Time
 	CreatedBefore *time.Time
+}
+
+type DashStats struct {
+	Pending  int `json:"pending" valid:"required"`
+	Active   int `json:"active" valid:"required"`
+	Finished int `json:"finished" valid:"required"`
 }

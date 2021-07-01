@@ -628,6 +628,24 @@ func (d *DeploymentsApiHandlers) GetDeployment(w rest.ResponseWriter, r *rest.Re
 	d.view.RenderSuccessGet(w, deployment)
 }
 
+func (d *DeploymentsApiHandlers) GetDeploymentDashboard(w rest.ResponseWriter, r *rest.Request) {
+	ctx := r.Context()
+	l := requestlog.GetRequestLogger(r)
+
+	dashStats, err := d.app.GetDeploymentDashboard(ctx)
+	if err != nil {
+		d.view.RenderInternalError(w, r, err, l)
+		return
+	}
+
+	if dashStats == nil {
+		d.view.RenderErrorNotFound(w, r, l)
+		return
+	}
+
+	d.view.RenderSuccessGet(w, dashStats)
+}
+
 func (d *DeploymentsApiHandlers) GetDeploymentStats(w rest.ResponseWriter, r *rest.Request) {
 	ctx := r.Context()
 	l := requestlog.GetRequestLogger(r)

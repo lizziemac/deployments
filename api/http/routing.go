@@ -41,6 +41,7 @@ const (
 	ApiUrlManagementArtifactsIdDownload = ApiUrlManagement + "/artifacts/:id/download"
 
 	ApiUrlManagementDeployments           = ApiUrlManagement + "/deployments"
+	ApiUrlManagementDeploymentDashboard   = ApiUrlManagement + "/deployments/dashboard"
 	ApiUrlManagementDeploymentsId         = ApiUrlManagement + "/deployments/:id"
 	ApiUrlManagementDeploymentsStatistics = ApiUrlManagement + "/deployments/:id/statistics"
 	ApiUrlManagementDeploymentsStatus     = ApiUrlManagement + "/deployments/:id/status"
@@ -145,6 +146,7 @@ func NewDeploymentsResourceRoutes(controller *DeploymentsApiHandlers) []*rest.Ro
 		rest.Get(ApiUrlManagementDeployments, controller.LookupDeployment),
 		rest.Get(ApiUrlManagementDeploymentsId, controller.GetDeployment),
 		rest.Get(ApiUrlManagementDeploymentsStatistics, controller.GetDeploymentStats),
+		rest.Get(ApiUrlManagementDeploymentDashboard, controller.GetDeploymentDashboard),
 		rest.Put(ApiUrlManagementDeploymentsStatus, controller.AbortDeployment),
 		rest.Get(ApiUrlManagementDeploymentsDevices,
 			controller.GetDeviceStatusesForDeployment),
