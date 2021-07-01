@@ -16,11 +16,11 @@ package model
 
 import (
 	"encoding/json"
+	"github.com/pkg/errors"
 	"time"
 
-	"github.com/pkg/errors"
-
-	uuid "github.com/satori/go.uuid"
+	"github.com/asaskevich/govalidator"
+	"github.com/satori/go.uuid"
 )
 
 // Errors
