@@ -41,7 +41,6 @@ const (
 	ApiUrlManagementArtifactsIdDownload = ApiUrlManagement + "/artifacts/:id/download"
 
 	ApiUrlManagementDeployments           = ApiUrlManagement + "/deployments"
-	ApiUrlManagementDeploymentDashboard   = ApiUrlManagement + "/deployments/dashboard"
 	ApiUrlManagementDeploymentsId         = ApiUrlManagement + "/deployments/:id"
 	ApiUrlManagementDeploymentsStatistics = ApiUrlManagement + "/deployments/:id/statistics"
 	ApiUrlManagementDeploymentsStatus     = ApiUrlManagement + "/deployments/:id/status"
@@ -52,7 +51,8 @@ const (
 
 	ApiUrlManagementReleases = ApiUrlManagement + "/deployments/releases"
 
-	ApiUrlManagementLimitsName = ApiUrlManagement + "/limits/:name"
+	ApiUrlManagementDeploymentDashboard = ApiUrlManagement + "/dashboard"
+	ApiUrlManagementLimitsName          = ApiUrlManagement + "/limits/:name"
 
 	ApiUrlDevicesDeploymentsNext  = ApiUrlDevices + "/device/deployments/next"
 	ApiUrlDevicesDeploymentStatus = ApiUrlDevices + "/device/deployments/:id/status"

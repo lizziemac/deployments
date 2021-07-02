@@ -1892,7 +1892,7 @@ func (db *DataStoreMongo) FindActiveDeploymentCount(ctx context.Context) (int, e
 	collDpl := database.Collection(CollectionDeployments)
 
 	filter := bson.M{
-		"deploymentid": "inprogress",
+		"status": "inprogress",
 	}
 
 	deviceCount, err := collDpl.CountDocuments(ctx, filter)
@@ -1908,7 +1908,7 @@ func (db *DataStoreMongo) FindPendingDeploymentCount(ctx context.Context) (int, 
 	collDpl := database.Collection(CollectionDeployments)
 
 	filter := bson.M{
-		"deploymentid": "pending",
+		"status": "pending",
 	}
 
 	deviceCount, err := collDpl.CountDocuments(ctx, filter)
@@ -1924,7 +1924,7 @@ func (db *DataStoreMongo) FindFinishedDeployments24hrs(ctx context.Context) (int
 	database := db.client.Database(mstore.DbFromContext(ctx, DatabaseName))
 	collDpl := database.Collection(CollectionDeployments)
 
-	filter := bson.M{"created": bson.M{
+	filter := bson.M{"status": "finished", "created": bson.M{
 		"$gte": primitive.NewDateTimeFromTime(time.Now().AddDate(0, 0, -1)), // past 24hrs
 	}}
 	deviceCount, err := collDpl.CountDocuments(ctx, filter)
