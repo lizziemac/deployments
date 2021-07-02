@@ -24,6 +24,7 @@ import (
 	mstore "github.com/mendersoftware/go-lib-micro/store"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	mopts "go.mongodb.org/mongo-driver/mongo/options"
 
@@ -1884,4 +1885,52 @@ func (db *DataStoreMongo) ExistByArtifactId(ctx context.Context,
 	}
 
 	return true, nil
+}
+
+func (db *DataStoreMongo) FindActiveDeploymentCount(ctx context.Context) (int, error) {
+	database := db.client.Database(mstore.DbFromContext(ctx, DatabaseName))
+	collDpl := database.Collection(CollectionDeployments)
+
+	filter := bson.M{
+		"status": "inprogress",
+	}
+
+	deviceCount, err := collDpl.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(deviceCount), nil
+}
+
+func (db *DataStoreMongo) FindPendingDeploymentCount(ctx context.Context) (int, error) {
+	database := db.client.Database(mstore.DbFromContext(ctx, DatabaseName))
+	collDpl := database.Collection(CollectionDeployments)
+
+	filter := bson.M{
+		"status": "pending",
+	}
+
+	deviceCount, err := collDpl.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(deviceCount), nil
+}
+
+func (db *DataStoreMongo) FindFinishedDeployments24hrs(ctx context.Context) (int, error) {
+
+	database := db.client.Database(mstore.DbFromContext(ctx, DatabaseName))
+	collDpl := database.Collection(CollectionDeployments)
+
+	filter := bson.M{"status": "finished", "created": bson.M{
+		"$gte": primitive.NewDateTimeFromTime(time.Now().AddDate(0, 0, -1)), // past 24hrs
+	}}
+	deviceCount, err := collDpl.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(deviceCount), nil
 }

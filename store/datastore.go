@@ -104,4 +104,7 @@ type DataStore interface {
 	SetDeploymentDeviceCount(ctx context.Context, deploymentID string, count int) error
 	IncrementDeploymentDeviceCount(ctx context.Context, deploymentID string, increment int) error
 	DeviceCountByDeployment(ctx context.Context, id string) (int, error)
+	FindActiveDeploymentCount(ctx context.Context) (int, error)
+	FindPendingDeploymentCount(ctx context.Context) (int, error)
+	FindFinishedDeployments24hrs(ctx context.Context) (int, error)
 }

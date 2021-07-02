@@ -217,3 +217,9 @@ type Query struct {
 	CreatedAfter  *time.Time
 	CreatedBefore *time.Time
 }
+
+type DashStats struct {
+	Pending  int `json:"pending" valid:"required"`
+	Active   int `json:"active" valid:"required"`
+	Finished int `json:"finished" valid:"required"`
+}

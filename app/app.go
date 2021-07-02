@@ -104,6 +104,7 @@ type App interface {
 	IsDeploymentFinished(ctx context.Context, deploymentID string) (bool, error)
 	AbortDeployment(ctx context.Context, deploymentID string) error
 	GetDeploymentStats(ctx context.Context, deploymentID string) (model.Stats, error)
+	GetDeploymentDashboard(ctx context.Context) (*model.DashStats, error)
 	GetDeploymentForDeviceWithCurrent(ctx context.Context, deviceID string,
 		current *model.InstalledDeviceDeployment) (*model.DeploymentInstructions, error)
 	HasDeploymentForDevice(ctx context.Context, deploymentID string,
@@ -1056,6 +1057,31 @@ func (d *Deployments) GetDeploymentStats(ctx context.Context,
 	}
 
 	return deployment.Stats, nil
+}
+
+func (d *Deployments) GetDeploymentDashboard(ctx context.Context) (*model.DashStats, error) {
+
+	dashboardStats := new(model.DashStats)
+	pending, err := d.db.FindPendingDeploymentCount(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "checking pending count")
+	}
+
+	active, err := d.db.FindActiveDeploymentCount(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "checking active count")
+	}
+
+	finished, err := d.db.FindFinishedDeployments24hrs(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "checking finished count")
+	}
+
+	dashboardStats.Pending = pending
+	dashboardStats.Active = active
+	dashboardStats.Finished = finished
+
+	return dashboardStats, nil
 }
 
 //GetDeviceStatusesForDeployment retrieve device deployment statuses for a given deployment.
